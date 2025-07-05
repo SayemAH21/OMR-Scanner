@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI OMR Scanner</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <style>
+        /* Custom Styles with Dynamic Gradient Background */
+        body {
+            font-family: 'Inter', sans-serif;
+            color: #ffffff;
+            background: linear-gradient(135deg, #0f0c29, #302b63, #24243e, #4a00e0);
+            background-size: 400% 400%;
+            animation: gradientAnimation 20s ease infinite;
+        }
+
+        @keyframes gradientAnimation {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .glass-card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .btn-primary {
+            background: linear-gradient(90deg, #8e2de2, #4a00e0);
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(74, 0, 224, 0.4);
+        }
+    </style>
+</head>
+<body class="text-white">
+
+    <div id="app-container" class="min-h-screen flex flex-col items-center justify-center p-4">
+
+        <!-- Authentication Section (Shown by default) -->
+        <div id="auth-section" class="w-full max-w-md">
+            <div class="glass-card p-8 rounded-2xl shadow-2xl">
+                <h1 class="text-3xl font-bold text-center mb-2">OMR Scanner</h1>
+                <p class="text-center text-gray-300 mb-6">আপনার অ্যাকাউন্টে লগইন করুন</p>
+                
+                <div class="flex border border-purple-500 rounded-lg mb-6">
+                    <button id="show-login-btn" class="w-1/2 p-2 bg-purple-600 rounded-l-md">লগইন</button>
+                    <button id="show-signup-btn" class="w-1/2 p-2">সাইন আপ</button>
+                </div>
+
+                <form id="login-form" class="">
+                    <div class="mb-4">
+                        <label for="login-email" class="block mb-2 text-sm font-medium">ইমেইল</label>
+                        <input type="email" id="login-email" class="w-full p-3 bg-gray-700 bg-opacity-50 rounded-lg border border-gray-600 focus:border-purple-500 focus:outline-none" required value="test.user@gmail.com">
+                    </div>
+                    <div class="mb-4">
+                        <label for="login-password" class="block mb-2 text-sm font-medium">পাসওয়ার্ড</label>
+                        <input type="password" id="login-password" class="w-full p-3 bg-gray-700 bg-opacity-50 rounded-lg border border-gray-600 focus:border-purple-500 focus:outline-none" required value="123456">
+                    </div>
+                    <div class="text-right mb-4">
+                        <a href="#" id="forgot-password-link" class="text-sm text-purple-300 hover:text-purple-200">পাসওয়ার্ড ভুলে গেছেন?</a>
+                    </div>
+                    <button type="submit" class="w-full btn-primary text-white font-bold py-3 rounded-lg">লগইন করুন</button>
+                </form>
+
+                <form id="signup-form" class="hidden">
+                    <div class="mb-4">
+                        <label for="signup-email" class="block mb-2 text-sm font-medium">ইমেইল</label>
+                        <input type="email" id="signup-email" class="w-full p-3 bg-gray-700 bg-opacity-50 rounded-lg border border-gray-600 focus:border-purple-500 focus:outline-none" required>
+                    </div>
+                    <div class="mb-6">
+                        <label for="signup-password" class="block mb-2 text-sm font-medium">পাসওয়ার্ড</label>
+                        <input type="password" id="signup-password" class="w-full p-3 bg-gray-700 bg-opacity-50 rounded-lg border border-gray-600 focus:border-purple-500 focus:outline-none" required>
+                    </div>
+                    <button type="submit" class="w-full btn-primary text-white font-bold py-3 rounded-lg">অ্যাকাউন্ট তৈরি করুন</button>
+                </form>
+
+                <div class="text-center my-4 text-gray-400">অথবা</div>
+                
+                <button id="google-signin-btn" class="w-full bg-white text-gray-800 font-semibold py-3 rounded-lg flex items-center justify-center">
+                    <i class="fab fa-google mr-2"></i> Google দিয়ে সাইন ইন করুন
+                </button>
+
+                <p id="auth-error" class="text-red-500 text-center mt-4"></p>
+
+                <div class="mt-8 text-center">
+                    <p class="text-sm text-gray-400 mb-3">Support এর জন্য যোগাযোগ করুন</p>
+                    <div class="flex justify-center items-center space-x-6">
+                        <a href="https://www.facebook.com/Sayem.Ahmed.VIP" target="_blank" rel="noopener noreferrer" aria-label="Facebook">
+                            <i class="fab fa-facebook text-2xl text-gray-300 hover:text-white transition-colors"></i>
+                        </a>
+                        <a href="mailto:sayemahsjn.edu@gmail.com" aria-label="Email">
+                            <i class="fas fa-envelope text-2xl text-gray-300 hover:text-white transition-colors"></i>
+                        </a>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- Main App Section (Hidden by default) -->
+        <div id="main-app" class="hidden w-full max-w-4xl">
+            <div class="flex justify-between items-center mb-8 glass-card p-4 rounded-xl">
+                <h1 class="text-2xl font-bold">AI OMR Scanner</h1>
+                <div>
+                    <span id="user-email" class="text-gray-300 mr-4"></span>
+                    <button id="logout-btn" class="bg-red-600 hover:bg-red-700 px-4 py-2 rounded-lg font-semibold">লগ আউট</button>
+                </div>
+            </div>
+
+            <div class="grid md:grid-cols-2 gap-8">
+                <div class="glass-card p-8 rounded-2xl">
+                    <h2 class="text-xl font-semibold mb-4">আপনার OMR শিট আপলোড করুন</h2>
+                    <p class="text-gray-400 mb-6">একটি পরিষ্কার এবং সোজা ছবি আপলোড করুন।</p>
+                    <div class="border-2 border-dashed border-gray-500 rounded-lg p-8 text-center">
+                        <input type="file" id="omr-file-input" class="hidden" accept="image/*">
+                        <button id="upload-btn" class="btn-primary text-white font-bold py-3 px-6 rounded-lg">
+                            <i class="fas fa-upload mr-2"></i> ফাইল সিলেক্ট করুন
+                        </button>
+                        <p id="file-name" class="mt-4 text-gray-400">কোনো ফাইল সিলেক্ট করা হয়নি</p>
+                    </div>
+                </div>
+
+                <div class="glass-card p-8 rounded-2xl">
+                    <h2 class="text-xl font-semibold mb-4">ফলাফল</h2>
+                    <div id="result-display">
+                        <p class="text-gray-400">ফলাফল দেখার জন্য একটি OMR শিট আপলোড করুন।</p>
+                    </div>
+                    
+                    <div id="loading-spinner" class="hidden text-center py-10">
+                        <i class="fas fa-spinner fa-spin text-4xl text-purple-400"></i>
+                        <p class="mt-4">প্রসেসিং চলছে... অনুগ্রহ করে অপেক্ষা করুন।</p>
+                    </div>
+
+                    <div id="result-details" class="hidden">
+                        <div class="text-center mb-6">
+                            <h3 class="text-lg font-medium">আপনার স্কোর</h3>
+                            <p id="total-score" class="text-5xl font-bold text-green-400"></p>
+                        </div>
+                        <div class="flex justify-around">
+                            <div class="text-center">
+                                <p class="text-3xl font-bold text-green-500" id="correct-answers"></p>
+                                <p class="text-gray-400">সঠিক উত্তর</p>
+                            </div>
+                            <div class="text-center">
+                                <p class="text-3xl font-bold text-red-500" id="wrong-answers"></p>
+                                <p class="text-gray-400">ভুল উত্তর</p>
+                            </div>
+                            <div class="text-center">
+                                <p class="text-3xl font-bold text-blue-400" id="unanswered"></p>
+                                <p class="text-gray-400">উত্তর দেননি</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Email Verification Modal -->
+        <div id="verification-modal" class="hidden fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center z-50">
+            <div class="glass-card p-8 rounded-2xl text-center max-w-sm">
+                <h2 class="text-2xl font-bold mb-4">আপনার ইমেইল ভেরিফাই করুন</h2>
+                <p class="text-gray-300">আপনার অ্যাকাউন্টের সম্পূর্ণ সুবিধা পেতে, অনুগ্রহ করে আপনার ইমেইলে পাঠানো ভেরিফিকেশন লিঙ্কে ক্লিক করুন।</p>
+                <button id="resend-verification-btn" class="mt-6 btn-primary text-white font-bold py-2 px-4 rounded-lg">পুনরায় লিঙ্ক পাঠান</button>
+            </div>
+        </div>
+
+        <!-- Forgot Password Modal -->
+        <div id="forgot-password-modal" class="hidden fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center z-50">
+            <div class="glass-card p-8 rounded-2xl text-center max-w-sm w-full">
+                <h2 class="text-2xl font-bold mb-4">পাসওয়ার্ড রিসেট</h2>
+                <p class="text-gray-300 mb-6">আপনার অ্যাকাউন্টের ইমেইল দিন। আমরা সেখানে একটি রিসেট লিঙ্ক পাঠাবো।</p>
+                <form id="forgot-password-form">
+                    <input type="email" id="reset-email" placeholder="আপনার ইমেইল" class="w-full p-3 bg-gray-700 bg-opacity-50 rounded-lg border border-gray-600 focus:border-purple-500 focus:outline-none mb-4" required>
+                    <button type="submit" class="w-full btn-primary text-white font-bold py-3 rounded-lg">রিসেট লিঙ্ক পাঠান</button>
+                </form>
+                <button id="close-forgot-modal-btn" class="mt-4 text-gray-400 hover:text-white">বন্ধ করুন</button>
+                <p id="reset-info" class="text-green-400 text-center mt-4"></p>
+            </div>
+        </div>
+
+    </div>
+
+    <script type="module">
+        // এই মডিউলটি Firebase-এর সাথে সংযোগ স্থাপন করে এবং ওয়েবসাইটের সমস্ত কার্যকারিতা পরিচালনা করে।
+
+        // --- নিরাপত্তা: সোর্স কোড দেখা বন্ধ করা ---
+        document.addEventListener('contextmenu', event => event.preventDefault());
+        document.addEventListener('keydown', event => {
+            if (event.ctrlKey && (event.key === 'u' || event.key === 'U' || event.key === 's' || event.key === 'S')) {
+                event.preventDefault();
+            }
+            if (event.ctrlKey && event.shiftKey && (event.key === 'I' || event.key === 'i' || event.key === 'C' || event.key === 'c' || event.key === 'J' || event.key === 'j')) {
+                event.preventDefault();
+            }
+            if (event.key === 'F12') {
+                event.preventDefault();
+            }
+        });
+
+        // Firebase SDK থেকে প্রয়োজনীয় ফাংশন ইম্পোর্ট করা হচ্ছে
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+        import { 
+            getAuth, 
+            createUserWithEmailAndPassword, 
+            signInWithEmailAndPassword, 
+            signInWithPopup, 
+            GoogleAuthProvider,
+            onAuthStateChanged,
+            sendEmailVerification,
+            sendPasswordResetEmail,
+            signOut
+        } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import { getStorage, ref, uploadBytes } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-storage.js";
+        import { getFirestore, doc, onSnapshot } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+
+        // আপনার Firebase প্রজেক্টের কনফিগারেশন এখানে পেস্ট করুন
+        const firebaseConfig = {
+            apiKey: "YOUR_API_KEY",
+            authDomain: "YOUR_AUTH_DOMAIN",
+            projectId: "YOUR_PROJECT_ID",
+            storageBucket: "YOUR_STORAGE_BUCKET",
+            messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
+            appId: "YOUR_APP_ID"
+        };
+
+        // Firebase অ্যাপটি শুরু করা হচ্ছে
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const storage = getStorage(app);
+        const db = getFirestore(app);
+        const provider = new GoogleAuthProvider();
+
+        // HTML এলিমেন্টগুলোকে ধরা হচ্ছে
+        const authSection = document.getElementById('auth-section');
+        const mainApp = document.getElementById('main-app');
+        const loginForm = document.getElementById('login-form');
+        const signupForm = document.getElementById('signup-form');
+        const showLoginBtn = document.getElementById('show-login-btn');
+        const showSignupBtn = document.getElementById('show-signup-btn');
+        const googleSigninBtn = document.getElementById('google-signin-btn');
+        const logoutBtn = document.getElementById('logout-btn');
+        const userEmailDisplay = document.getElementById('user-email');
+        const authError = document.getElementById('auth-error');
+        
+        const verificationModal = document.getElementById('verification-modal');
+        const resendVerificationBtn = document.getElementById('resend-verification-btn');
+        
+        const forgotPasswordLink = document.getElementById('forgot-password-link');
+        const forgotPasswordModal = document.getElementById('forgot-password-modal');
+        const closeForgotModalBtn = document.getElementById('close-forgot-modal-btn');
+        const forgotPasswordForm = document.getElementById('forgot-password-form');
+        const resetInfo = document.getElementById('reset-info');
+
+        const uploadBtn = document.getElementById('upload-btn');
+        const omrFileInput = document.getElementById('omr-file-input');
+        const fileNameDisplay = document.getElementById('file-name');
+        const resultDisplay = document.getElementById('result-display');
+        const loadingSpinner = document.getElementById('loading-spinner');
+        const resultDetails = document.getElementById('result-details');
+        const totalScore = document.getElementById('total-score');
+        const correctAnswers = document.getElementById('correct-answers');
+        const wrongAnswers = document.getElementById('wrong-answers');
+        const unanswered = document.getElementById('unanswered');
+
+
+        // লগইন এবং সাইন আপ ফর্ম পরিবর্তন করার ফাংশন
+        showLoginBtn.addEventListener('click', () => {
+            loginForm.classList.remove('hidden');
+            signupForm.classList.add('hidden');
+            showLoginBtn.classList.add('bg-purple-600');
+            showSignupBtn.classList.remove('bg-purple-600');
+        });
+
+        showSignupBtn.addEventListener('click', () => {
+            loginForm.classList.add('hidden');
+            signupForm.classList.remove('hidden');
+            showSignupBtn.classList.add('bg-purple-600');
+            showLoginBtn.classList.remove('bg-purple-600');
+        });
+
+        // ইমেইল/পাসওয়ার্ড দিয়ে সাইন আপ
+        signupForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const email = signupForm['signup-email'].value;
+            const password = signupForm['signup-password'].value;
+
+            createUserWithEmailAndPassword(auth, email, password)
+                .then((userCredential) => {
+                    sendEmailVerification(auth.currentUser)
+                        .then(() => {
+                            alert('একটি ভেরিফিকেশন ইমেইল পাঠানো হয়েছে। অনুগ্রহ করে আপনার ইমেইল চেক করুন।');
+                        });
+                })
+                .catch((error) => {
+                    authError.textContent = error.message;
+                });
+        });
+
+        // ইমেইল/পাসওয়ার্ড দিয়ে লগইন
+        loginForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const email = loginForm['login-email'].value;
+            const password = loginForm['login-password'].value;
+
+            signInWithEmailAndPassword(auth, email, password)
+                .catch((error) => {
+                    authError.textContent = error.message;
+                });
+        });
+
+        // Google দিয়ে সাইন ইন
+        googleSigninBtn.addEventListener('click', () => {
+            signInWithPopup(auth, provider)
+                .catch((error) => {
+                    authError.textContent = error.message;
+                });
+        });
+
+        // লগ আউট
+        logoutBtn.addEventListener('click', () => {
+            signOut(auth);
+        });
+
+        // ব্যবহারকারীর লগইন অবস্থা পর্যবেক্ষণ করা
+        onAuthStateChanged(auth, (user) => {
+            authError.textContent = '';
+            resetInfo.textContent = '';
+            if (user) {
+                if (user.emailVerified) {
+                    authSection.classList.add('hidden');
+                    mainApp.classList.remove('hidden');
+                    verificationModal.classList.add('hidden');
+                    userEmailDisplay.textContent = user.email;
+                } else {
+                    authSection.classList.add('hidden');
+                    mainApp.classList.add('hidden');
+                    verificationModal.classList.remove('hidden');
+                }
+            } else {
+                authSection.classList.remove('hidden');
+                mainApp.classList.add('hidden');
+                verificationModal.classList.add('hidden');
+            }
+        });
+
+        // OMR ফাইল আপলোড করার লজিক
+        uploadBtn.addEventListener('click', () => omrFileInput.click());
+        omrFileInput.addEventListener('change', (e) => {
+            const file = e.target.files[0];
+            if (file && auth.currentUser) {
+                fileNameDisplay.textContent = file.name;
+                resultDisplay.classList.add('hidden');
+                loadingSpinner.classList.remove('hidden');
+                resultDetails.classList.add('hidden');
+
+                const userId = auth.currentUser.uid;
+                const uploadId = new Date().getTime() + '-' + file.name;
+                const storageRef = ref(storage, `users/${userId}/uploads/${uploadId}`);
+
+                uploadBytes(storageRef, file).then(() => {
+                    console.log('Uploaded a blob or file!');
+                    listenForResult(userId, uploadId);
+                }).catch(error => {
+                    console.error("Upload failed", error);
+                    loadingSpinner.classList.add('hidden');
+                    resultDisplay.classList.remove('hidden');
+                    resultDisplay.innerHTML = `<p class="text-red-500">ফাইল আপলোড ব্যর্থ হয়েছে।</p>`;
+                });
+            }
+        });
+
+        // Firestore থেকে ফলাফল পাওয়ার জন্য রিয়েলটাইম লিসেনার
+        let unsubscribe;
+        function listenForResult(userId, uploadId) {
+            const resultDocRef = doc(db, `users/${userId}/results/${uploadId}`);
+            unsubscribe = onSnapshot(resultDocRef, (doc) => {
+                if (doc.exists()) {
+                    const data = doc.data();
+                    if(data.error){
+                        alert(`Processing Error: ${data.error}`);
+                        loadingSpinner.classList.add('hidden');
+                        resultDisplay.classList.remove('hidden');
+                        resultDisplay.innerHTML = `<p class="text-red-500">ফাইল প্রসেস করা সম্ভব হয়নি।</p>`;
+                    } else {
+                        displayResults(data);
+                    }
+                    if (unsubscribe) unsubscribe();
+                }
+            });
+        }
+
+        // ফলাফল প্রদর্শন করার ফাংশন
+        function displayResults(data) {
+            loadingSpinner.classList.add('hidden');
+            resultDetails.classList.remove('hidden');
+            totalScore.textContent = `${data.score}/${data.totalQuestions}`;
+            correctAnswers.textContent = data.correct;
+            wrongAnswers.textContent = data.wrong;
+            unanswered.textContent = data.unanswered;
+        }
+
+        // --- পাসওয়ার্ড রিসেট এবং ভেরিফিকেশন মডাল লজিক ---
+
+        resendVerificationBtn.addEventListener('click', () => {
+            if (auth.currentUser) {
+                sendEmailVerification(auth.currentUser)
+                    .then(() => alert('ভেরিফিকেশন ইমেইল আবার পাঠানো হয়েছে।'))
+                    .catch(error => alert(`Error: ${error.message}`));
+            }
+        });
+
+        forgotPasswordLink.addEventListener('click', (e) => {
+            e.preventDefault();
+            forgotPasswordModal.classList.remove('hidden');
+        });
+
+        closeForgotModalBtn.addEventListener('click', () => {
+            forgotPasswordModal.classList.add('hidden');
+            resetInfo.textContent = '';
+            authError.textContent = '';
+            forgotPasswordForm.reset();
+        });
+
+        forgotPasswordForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const email = forgotPasswordForm['reset-email'].value;
+            resetInfo.textContent = 'প্রসেসিং...';
+            resetInfo.classList.remove('text-red-500');
+            resetInfo.classList.add('text-green-400');
+            authError.textContent = '';
+
+            sendPasswordResetEmail(auth, email)
+                .then(() => {
+                    resetInfo.textContent = 'পাসওয়ার্ড রিসেট করার জন্য একটি লিঙ্ক আপনার ইমেইলে পাঠানো হয়েছে।';
+                    forgotPasswordForm.reset();
+                })
+                .catch((error) => {
+                    if (error.code === 'auth/user-not-found') {
+                        resetInfo.textContent = 'এই ইমেইল দিয়ে কোনো অ্যাকাউন্ট রেজিস্টার করা নেই।';
+                        resetInfo.classList.add('text-red-500');
+                        resetInfo.classList.remove('text-green-400');
+                    } else {
+                        resetInfo.textContent = '';
+                        authError.textContent = error.message;
+                    }
+                });
+        });
+
+    </script>
+</body>
+</html>

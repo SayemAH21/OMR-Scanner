@@ -1,0 +1,1 @@
+requirements.txtএই ফাইলটি main.py এর সাথে একই ফোল্ডারে থাকবে।functions-framework==3.*firebase-admin==6.*numpy==1.23.5opencv-python-headless==4.8.0.76
